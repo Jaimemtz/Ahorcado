@@ -44,6 +44,7 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         //aquí va el código que poniamos en el run en ACM
         cambiaImagenAhorcado();
         eligePalabraOculta();
+        
         pintaGuionesEnLabel();
     }
     
@@ -55,7 +56,7 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         BufferedReader br = null;
         Random r = new Random();
         fichero = new File("src/lemario-20101017.txt");
-        String linea;
+        String linea = "";
         try {
             fr = new FileReader(fichero);
             br = new BufferedReader(fr);
@@ -82,6 +83,7 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         }
           catch (IOException ex) {
         }
+        palabraOculta = linea;
         
 //        
 //        String [] listaDePalabras = new String[10];
@@ -132,36 +134,40 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         jLabel2.setIcon(icono);
            
     }
-     private void chequeaLetra (JButton boton){
-        if(boton.isEnabled()){
-        String letra = boton.getText();
-        boton.setEnabled(false);
-        String palabraConGuiones = jLabel1.getText();
-        
-        if (palabraOculta.contains(letra)){
-            for (int i=0; i<palabraOculta.length(); i++){
-                if(palabraOculta.charAt(i)== letra.charAt(0)){
-                    
-                    palabraConGuiones = palabraConGuiones.substring (0,2*i)
-                            + letra
-                            + palabraConGuiones.substring(2*i+1);
+     private void chequeaLetra(JButton boton){
+        if (boton.isEnabled()){
+            //cambio a minúsculas la letra del botón
+            String letra = boton.getText().toLowerCase();
+            System.out.println(letra);
+            boton.setEnabled(false);
+            String palabraConGuiones = jLabel1.getText();
+
+            if (palabraOculta.contains(letra)){
+                for (int i=0; i< palabraOculta.length(); i++){
+                   if (palabraOculta.charAt(i) == letra.charAt(0)){
+                       palabraConGuiones = 
+                                 palabraConGuiones.substring(0, 2*i)
+                               + letra
+                               + palabraConGuiones.substring(2*i +1);
+                   }
                 }
+                jLabel1.setText(palabraConGuiones);
+                
+                //compruebo si en la palabraConGuiones hay guiones o no
+                // si hay algún guión no hago nada porque no he adivinado todavia la partida
+                // si no hay guiones, tengo que indicar de alguna forma que he ganado la partida
+                if (!palabraConGuiones.contains("_")){
+                    numeroFallos = -1;
+                }
+            }
+            else{
+                numeroFallos++;
+                
+            }
         }
-     jLabel1.setText(palabraConGuiones);
-     //compruebo si en la palabraConGuiones hay guiones o no 
-     // si hay algún guión no hago nada porque no he adivinado todavia la 
-     //partida si hay guiones, tengo que indicar que he ganado la partida
-     if (!palabraConGuiones.contains("_")){
-       numeroFallos = -1; 
-     }
+        cambiaImagenAhorcado();
     }
-    else{
-    numeroFallos++;
     
-}
-        }
-    cambiaImagenAhorcado();
-}
      
 
     /**
