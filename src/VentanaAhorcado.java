@@ -30,59 +30,85 @@ import javax.swing.JButton;
 
 
 public class VentanaAhorcado extends javax.swing.JFrame {
+
+    String palabraOculta = "";
     
-    private void eligePalabraOculta() {
-        File fichero = null;
-        FileReader fr = null;
-        BufferedReader br = null;
-        fichero = new File("src/lemario-20101017.txt");
-          try {
-                fr = new FileReader(fichero);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(VentanaAhorcado.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            br = new BufferedReader (fr);
-            String linea;
-            try {
-                while ((linea=br.readLine())!= null){
-                }   } catch (IOException ex) {
-                }
-            }
-    
-    String [] palabrasOcultas = new String[10];
-    String palabraOculta = "CETYS";
-     
-    //contador para saber el numero de fallos
+    // contador para saber el número de fallos
     int numeroFallos = 0;
     
-    
+    /**
+     * Creates new form VentanaAhorcado
+     */
     public VentanaAhorcado() {
         initComponents();
+        //aquí va el código que poniamos en el run en ACM
         cambiaImagenAhorcado();
-        palabrasOcultas[0] = "CETYS";
-        palabrasOcultas[1] = "UFV";
-        palabrasOcultas[2] = "DAM";
-        palabrasOcultas[3] = "XAMP";
-        palabrasOcultas[4] = "BEAT";
-        palabrasOcultas[5] = "LOCO";
-        palabrasOcultas[6] = "TECLADO";
-        palabrasOcultas[7] = "NOEL";
-        palabrasOcultas[8] = "SHACO";
-        palabrasOcultas[9] = "JAJA";
-        
-        Random palabra = new Random();
-       
-        palabraOculta = palabrasOcultas[palabra.nextInt(palabrasOcultas.length)];
-      
-       palabraOculta();
+        eligePalabraOculta();
+        pintaGuionesEnLabel();
     }
     
-    private void palabraOculta(){
+     private void eligePalabraOculta(){
+        
+        //Método básico de lectura de ficheros en Java
+        File fichero = null;
+        FileReader fr = null; 
+        BufferedReader br = null;
+        Random r = new Random();
+        fichero = new File("src/lemario-20101017.txt");
+        String linea;
+        try {
+            fr = new FileReader(fichero);
+            br = new BufferedReader(fr);
+            
+            int numeroLineasFichero = 0;
+            
+            while ( (linea = br.readLine()) != null ){
+                numeroLineasFichero++;
+            }
+            System.out.println(numeroLineasFichero);
+            int lineaSeleccionada = r.nextInt(numeroLineasFichero);
+            System.out.println(lineaSeleccionada);
+            
+            fr.close();
+            fr = new FileReader(fichero);
+            br = new BufferedReader(fr);
+            
+            for (int i=0; i<lineaSeleccionada; i++){
+                linea = br.readLine();
+            }
+            System.out.println(linea);
+            
+        } catch (FileNotFoundException ex) {    
+        }
+          catch (IOException ex) {
+        }
+        
+//        
+//        String [] listaDePalabras = new String[10];
+//        
+//        
+//        listaDePalabras[0] = "tal";
+//        listaDePalabras[1] = "taluno";
+//        listaDePalabras[2] = "taldos";
+//        listaDePalabras[3] = "taltres";
+//        listaDePalabras[4] = "talcuatro";
+//        listaDePalabras[5] = "talcinco";
+//        listaDePalabras[6] = "talseis";
+//        listaDePalabras[7] = "talsiete";
+//        listaDePalabras[8] = "talocho";
+//        listaDePalabras[9] = "talnueve";
+//
+//        
+//        palabraOculta = listaDePalabras[r.nextInt(9)];
+//        System.out.println(palabraOculta);
+    }
+    
+    private void pintaGuionesEnLabel(){
         jLabel1.setText("");
-        for (int i = 0; i < palabraOculta.length(); i++) {
+        for (int i=0; i<palabraOculta.length(); i++){
             jLabel1.setText(jLabel1.getText() + "_ ");
         }
-}
+    }
     private void cambiaImagenAhorcado(){
         
         String nombreImagen="";
